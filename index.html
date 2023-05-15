@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Cost of living data visualization</title>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+<div id="root">
+  <h2 id="title">Change in living costs compared to 6 months ago</h2>
+  <div id="changeLegend" class="hidden">
+    <div class="legendItem" style="margin-left: 80px">
+      <div id="square001AFF" class="square" style="background-color: #001AFF"></div>
+      Don't know
+    </div>
+    <div class="legendItem">
+      <div id="square7BBD42" class="square" style="background-color: #7BBD42"></div>
+      Decreased a lot
+    </div>
+    <div class="legendItem">
+      <div id="squareCED629" class="square" style="background-color: #CED629"></div>
+      Decreased a little
+    </div>
+    <div class="legendItem">
+      <div id="squareFCB712" class="square" style="background-color: #FCB712"></div>
+      Stayed the same
+    </div>
+    <div class="legendItem">
+      <div id="squareEA721C" class="square" style="background-color: #EA721C"></div>
+      Increased a little
+    </div>
+    <div class="legendItem" style="margin-right: 80px">
+      <div id="squareD02F37" class="square" style="background-color: #D02F37"></div>
+      Increased a lot
+    </div>
+  </div>
+  <div id="categoryLegend" class="legendDiv">
+    <div class="legendItem" style="margin-left: 25px">
+      <div id="square3D59A7" class="square" style="background-color: #3D59A7"></div>
+      Regular household shop
+    </div>
+    <div class="legendItem">
+      <div id="squareEE3226" class="square" style="background-color: #EE3226"></div>
+      Rent, mortgage or housing payments
+    </div>
+    <div class="legendItem">
+      <div id="squareC366A8" class="square" style="background-color: #C366A8"></div>
+      Energy bills
+    </div>
+    <div class="legendItem">
+      <div id="square65BC46" class="square" style="background-color: #65BC46"></div>
+      Other household bills
+    </div>
+    <div class="legendItem">
+      <div id="square6ACCDD" class="square" style="background-color: #6ACCDD"></div>
+      Day to day transport costs
+    </div>
+    <div class="legendItem" style="margin-right: 25px">
+      <div id="squareF6BB2D" class="square" style="background-color: #F6BB2D"></div>
+      Leisure costs and non-essential shopping
+    </div>
+  </div>
+  <div style="display: inline-flex; width: 100%">
+    <div id="radioButtonGroupsDiv">
+      <div id="categoryRadioGroup">
+        <span>Select living cost category</span>
+        <div style="height: 10px"></div>
+
+        <div class="radioButtonAndLabelDiv">
+          <input type="radio" id="allCategories" name="category" value="all" checked onchange="changeCategory(value)">
+          <label for="allCategories">All</label>
+        </div>
+
+        <div class="radioButtonAndLabelDiv">
+          <input type="radio" id="regularHouseholdShop" name="category" value="regularHouseholdShop"
+                 onchange="changeCategory(value)">
+          <label for="regularHouseholdShop">Regular household shop</label>
+        </div>
+
+        <div class="radioButtonAndLabelDiv">
+          <input type="radio" id="rentMortgageOrHousingPayments" name="category" value="rentMortgageOrHousingPayments"
+                 onchange="changeCategory(value)">
+          <label for="rentMortgageOrHousingPayments">Rent, mortgage or housing payments</label>
+        </div>
+
+        <div class="radioButtonAndLabelDiv">
+          <input type="radio" id="energyBills" name="category" value="energyBills" onchange="changeCategory(value)">
+          <label for="energyBills">Energy bills</label>
+        </div>
+
+        <div class="radioButtonAndLabelDiv">
+          <input type="radio" id="otherHouseholdBills" name="category" value="otherHouseholdBills"
+                 onchange="changeCategory(value)">
+          <label for="otherHouseholdBills">Other household bills</label>
+        </div>
+
+        <div class="radioButtonAndLabelDiv">
+          <input type="radio" id="dayToDayTransportCosts" name="category" value="dayToDayTransportCosts"
+                 onchange="changeCategory(value)">
+          <label for="dayToDayTransportCosts">Day to day transport costs</label>
+        </div>
+
+        <div class="radioButtonAndLabelDiv">
+          <input type="radio" id="leisureCostsAndNonEssentialShopping" name="category"
+                 value="leisureCostsAndNonEssentialShopping" onchange="changeCategory(value)">
+          <label for="leisureCostsAndNonEssentialShopping">Leisure costs and non-essential shopping</label>
+        </div>
+      </div>
+
+      <div id="monthRadioGroup">
+        <span>Select month</span><br>
+        <div style="height: 10px"></div>
+
+        <div class="radioButtonAndLabelDiv">
+          <input type="radio" id="allMonths" name="month" value="all" checked onchange="changeMonth(value)">
+          <label for="allMonths">All</label>
+        </div>
+
+        <div class="radioButtonAndLabelDiv">
+          <input type="radio" id="january" name="month" value="january" onchange="changeMonth(value)">
+          <label for="january">January</label>
+        </div>
+
+        <div class="radioButtonAndLabelDiv">
+          <input type="radio" id="april" name="month" value="april" onchange="changeMonth(value)">
+          <label for="april">April</label>
+        </div>
+
+        <div class="radioButtonAndLabelDiv">
+          <input type="radio" id="july" name="month" value="july" onchange="changeMonth(value)">
+          <label for="july">July</label>
+        </div>
+      </div>
+
+    </div>
+    <div id="viewsDiv">
+      <div id="lineChartDiv">
+        <svg id="lineChart" style="background-color: white" height="540" width="500"></svg>
+      </div>
+
+      <div id="groupedBarChartDiv">
+        <svg id="groupedBarChart" style="background-color: white" height="540" width="830"></svg> <!-- 652 -->
+      </div>
+    </div>
+  </div>
+
+
+  <div style="margin-top: 50px">
+    <h3>Data processing</h3>
+    <p>
+      The data used in this visualization can be found on the following page: <a
+            href="https://data.london.gov.uk/dataset/gla-poll-results-cost-of-living-2022">GLA cost of living polling
+      dataset</a>. Only the January 2022, April 2022 and July 2022 spreadsheets were used. Of those spreadsheets, I only
+      took data from the tables showing the responses for the question "To what extent have each of the following living
+      costs increased, decreased or stayed the same for your household over the last six months?". There are six tables
+      for this question in each spreadsheet. I only considered the values in the "All" column.
+    </p>
+    <p>
+      I manually created a JSON object with the values from the three spreadsheets since there was not too much data to
+      manually copy over and as a result, it would likely have taken longer to figure out how to copy the relevant data
+      in the xlsx files into a JSON file. I decided upon using JSON as I am already familiar with how to extract the
+      values I am interested in. The aggregated data is computed directly in the code - it is not in the JSON object. To
+      aggregate the data, I assigned a score to the change categories like so: +2, for “increased a lot”, +1 for
+      “increased a little”, 0 for “stayed the same”, -1 for “decreased a little” and -2 for “decreased a lot”. Then, I
+      multiplied the percentage of survey respondents for each category with its corresponding score and summed the
+      values to obtain the aggregated total. I excluded the “don’t know” response category for the aggregation.
+    </p>
+
+  </div>
+
+</div>
+</body>
+<script src="index.js" charset="utf-8"></script>
+</html>
